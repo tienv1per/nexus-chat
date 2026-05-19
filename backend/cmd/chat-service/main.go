@@ -1,0 +1,24 @@
+package main
+
+import (
+	"log/slog"
+	"os"
+
+	"mini-grpc/backend/internal/platform/config"
+)
+
+func main() {
+	cfg, err := config.Load()
+	if err != nil {
+		slog.Error("load config", "error", err)
+		os.Exit(1)
+	}
+
+	slog.Info(
+		"chat service bootstrap ready",
+		"http_port",
+		cfg.HTTP.ChatPort,
+		"grpc_port",
+		cfg.GRPC.ChatPort,
+	)
+}

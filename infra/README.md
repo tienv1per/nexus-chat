@@ -6,9 +6,8 @@ This folder owns local-only infrastructure for the real-time chat learning syste
 
 | Service | Port | Purpose |
 |---|---:|---|
-| PostgreSQL | `5432` | Users, conversations, members, media metadata. |
+| PostgreSQL | `5432` | Metadata, message history, and delivery status. |
 | Redis | `6379` | Sessions, presence, sequence counters, dedup keys. |
-| Cassandra | `9042` | Message history and delivery status. |
 | Kafka | `9092` | Async event handoff for delivery fan-out. |
 
 Application ports are reserved for later phases:

@@ -18,7 +18,7 @@ func main() {
 		"status consumer bootstrap ready",
 		"topic",
 		cfg.Kafka.MessageDeliveredTopic,
-		"keyspace",
-		cfg.Cassandra.Keyspace,
+		"storage",
+		"postgres",
 	)
 }

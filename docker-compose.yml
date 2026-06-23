@@ -32,26 +32,6 @@ services:
       timeout: 5s
       retries: 10
 
-  cassandra:
-    image: cassandra:4.1
-    container_name: mini-grpc-cassandra
-    environment:
-      CASSANDRA_CLUSTER_NAME: chat-v1-local
-      CASSANDRA_DC: datacenter1
-      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
-      MAX_HEAP_SIZE: 512M
-      HEAP_NEWSIZE: 128M
-    ports:
-      - "9042:9042"
-    volumes:
-      - cassandra_data:/var/lib/cassandra
-    healthcheck:
-      test: ["CMD-SHELL", "cqlsh 127.0.0.1 9042 -e 'DESCRIBE KEYSPACES'"]
-      interval: 20s
-      timeout: 10s
-      retries: 15
-      start_period: 70s
-
   kafka:
     image: bitnami/kafka:3.7
     container_name: mini-grpc-kafka
@@ -98,5 +78,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  cassandra_data:
   kafka_data:

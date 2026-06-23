@@ -18,9 +18,6 @@ const (
 	defaultWSGRPCPort                  = 9081
 	defaultPostgresDSN                 = "postgres://chat:chat@localhost:5432/chat_v1?sslmode=disable"
 	defaultRedisAddr                   = "localhost:6379"
-	defaultCassandraHosts              = "localhost:9042"
-	defaultCassandraKeyspace           = "chat_v1"
-	defaultCassandraLocalDC            = "datacenter1"
 	defaultKafkaBrokers                = "localhost:9092"
 	defaultMessageCreatedTopic         = "chat.message.created"
 	defaultMessageDeliveredTopic       = "chat.message.delivered"
@@ -36,16 +33,15 @@ type LookupFunc func(key string) (string, bool)
 
 // Config contains process configuration shared by local chat services.
 type Config struct {
-	AppEnv    string
-	LogLevel  string
-	HTTP      HTTPConfig
-	GRPC      GRPCConfig
-	Postgres  PostgresConfig
-	Redis     RedisConfig
-	Cassandra CassandraConfig
-	Kafka     KafkaConfig
-	Upload    UploadConfig
-	Presence  PresenceConfig
+	AppEnv   string
+	LogLevel string
+	HTTP     HTTPConfig
+	GRPC     GRPCConfig
+	Postgres PostgresConfig
+	Redis    RedisConfig
+	Kafka    KafkaConfig
+	Upload   UploadConfig
+	Presence PresenceConfig
 }
 
 // HTTPConfig contains public HTTP ports.
@@ -68,13 +64,6 @@ type PostgresConfig struct {
 // RedisConfig contains Redis connection settings.
 type RedisConfig struct {
 	Addr string
-}
-
-// CassandraConfig contains Cassandra connection settings.
-type CassandraConfig struct {
-	Hosts           []string
-	Keyspace        string
-	LocalDataCenter string
 }
 
 // KafkaConfig contains Kafka connection settings and topic names.
@@ -161,11 +150,6 @@ func LoadFromLookup(lookup LookupFunc) (Config, error) {
 		Redis: RedisConfig{
 			Addr: readString(lookup, "REDIS_ADDR", defaultRedisAddr),
 		},
-		Cassandra: CassandraConfig{
-			Hosts:           readCSV(lookup, "CASSANDRA_HOSTS", defaultCassandraHosts),
-			Keyspace:        readString(lookup, "CASSANDRA_KEYSPACE", defaultCassandraKeyspace),
-			LocalDataCenter: readString(lookup, "CASSANDRA_LOCAL_DATACENTER", defaultCassandraLocalDC),
-		},
 		Kafka: KafkaConfig{
 			Brokers:               readCSV(lookup, "KAFKA_BROKERS", defaultKafkaBrokers),
 			MessageCreatedTopic:   readString(lookup, "KAFKA_TOPIC_MESSAGE_CREATED", defaultMessageCreatedTopic),
@@ -215,15 +199,6 @@ func (c Config) Validate() error {
 	}
 	if strings.TrimSpace(c.Redis.Addr) == "" {
 		return fmt.Errorf("REDIS_ADDR is required")
-	}
-	if len(c.Cassandra.Hosts) == 0 {
-		return fmt.Errorf("CASSANDRA_HOSTS is required")
-	}
-	if strings.TrimSpace(c.Cassandra.Keyspace) == "" {
-		return fmt.Errorf("CASSANDRA_KEYSPACE is required")
-	}
-	if strings.TrimSpace(c.Cassandra.LocalDataCenter) == "" {
-		return fmt.Errorf("CASSANDRA_LOCAL_DATACENTER is required")
 	}
 	if len(c.Kafka.Brokers) == 0 {
 		return fmt.Errorf("KAFKA_BROKERS is required")

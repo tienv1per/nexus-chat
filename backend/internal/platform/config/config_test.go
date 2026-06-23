@@ -51,9 +51,6 @@ func TestLoadFromLookupOverrides(t *testing.T) {
 		"WS_GRPC_PORT":                  "19081",
 		"POSTGRES_DSN":                  "postgres://example",
 		"REDIS_ADDR":                    "redis:6379",
-		"CASSANDRA_HOSTS":               "cass1:9042,cass2:9042",
-		"CASSANDRA_KEYSPACE":            "chat_test",
-		"CASSANDRA_LOCAL_DATACENTER":    "dc1",
 		"KAFKA_BROKERS":                 "kafka1:9092,kafka2:9092",
 		"KAFKA_TOPIC_MESSAGE_CREATED":   "test.created",
 		"KAFKA_TOPIC_MESSAGE_DELIVERED": "test.delivered",
@@ -72,8 +69,8 @@ func TestLoadFromLookupOverrides(t *testing.T) {
 	if cfg.AppEnv != "test" {
 		t.Fatalf("AppEnv = %q; want test", cfg.AppEnv)
 	}
-	if len(cfg.Cassandra.Hosts) != 2 {
-		t.Fatalf("Cassandra.Hosts length = %d; want 2", len(cfg.Cassandra.Hosts))
+	if cfg.Postgres.DSN != "postgres://example" {
+		t.Fatalf("Postgres.DSN = %q; want postgres://example", cfg.Postgres.DSN)
 	}
 	if cfg.Kafka.Brokers[1] != "kafka2:9092" {
 		t.Fatalf("Kafka.Brokers[1] = %q; want kafka2:9092", cfg.Kafka.Brokers[1])

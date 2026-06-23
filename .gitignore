@@ -16,3 +16,7 @@ web/out/
 web/coverage/
 
 .DS_Store
+
+.agents/
+docs/assets/
+docs/chat-v1/

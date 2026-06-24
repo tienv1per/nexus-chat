@@ -1,0 +1,19 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">NexusChat logo mark</title>
+  <desc id="desc">A rounded square chat mark with connected nodes forming the letter N.</desc>
+  <defs>
+    <linearGradient id="nexusGradient" x1="12" y1="10" x2="86" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2DD4BF"/>
+      <stop offset="0.55" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <path d="M20 8h56c6.627 0 12 5.373 12 12v42c0 6.627-5.373 12-12 12H50.5L31.2 87.2C28.542 89.016 25 87.112 25 83.893V74h-5C13.373 74 8 68.627 8 62V20C8 13.373 13.373 8 20 8Z" fill="url(#nexusGradient)" filter="url(#softShadow)"/>
+  <path d="M28 61V35c0-4.418 5.477-6.487 8.404-3.178L60 58.5V35" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="28" cy="35" r="7" fill="#ECFEFF" stroke="#99F6E4" stroke-width="3"/>
+  <circle cx="60" cy="61" r="7" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="3"/>
+  <circle cx="60" cy="35" r="5" fill="#FFFFFF" fill-opacity="0.9"/>
+</svg>

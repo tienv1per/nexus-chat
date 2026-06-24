@@ -1,6 +1,6 @@
 # PostgreSQL
 
-Phase 2 will add SQL migrations for:
+Phase 3 will add SQL migrations for:
 
 - `users`
 - `conversations`

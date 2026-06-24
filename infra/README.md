@@ -31,4 +31,4 @@ make infra-down
 
 Kafka topics are created by `infra/kafka/create-topics.sh` with a one-day local retention policy.
 
-Database migrations and seed scripts are intentionally deferred to Phase 2.
+Database migrations and seed scripts are intentionally deferred to Phase 3.

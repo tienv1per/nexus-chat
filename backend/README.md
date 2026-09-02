@@ -19,4 +19,16 @@ go run ./cmd/status-consumer
 - `cmd/ws-server`: WebSocket endpoint and internal push gRPC service.
 - `cmd/delivery-consumer`: Kafka consumer for realtime fan-out.
 - `cmd/status-consumer`: Kafka consumer for delivery status writes.
-- `internal/platform`: shared platform concerns such as configuration.
+- `internal/domain`: framework-free chat IDs, enums, and entities.
+- `internal/application`: inbound use-case contracts, outbound ports, and application errors.
+- `internal/adapters`: inbound/outbound adapter boundaries for HTTP, gRPC, WebSocket, PostgreSQL, Redis, Kafka, and local media storage.
+- `internal/composition`: per-binary wiring roots with no package-level database or client globals.
+- `internal/platform`: shared platform concerns such as configuration, logging, correlation IDs, and process runtime.
+
+## Health
+
+`chat-service` and `ws-server` expose:
+
+- `GET /health/live`
+- `GET /health/ready`
+- `GET /healthz`

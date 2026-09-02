@@ -39,6 +39,9 @@ func TestLoadFromLookupDefaults(t *testing.T) {
 	if cfg.Presence.HeartbeatInterval != 25*time.Second {
 		t.Fatalf("HeartbeatInterval = %s; want 25s", cfg.Presence.HeartbeatInterval)
 	}
+	if cfg.Auth.JWTSecret != "local-dev-secret-change-me" {
+		t.Fatalf("Auth.JWTSecret = %q; want default local secret", cfg.Auth.JWTSecret)
+	}
 }
 
 func TestLoadFromLookupOverrides(t *testing.T) {
@@ -59,6 +62,7 @@ func TestLoadFromLookupOverrides(t *testing.T) {
 		"SESSION_TTL_SECONDS":           "45",
 		"PRESENCE_TTL_SECONDS":          "45",
 		"HEARTBEAT_INTERVAL_SECONDS":    "10",
+		"JWT_SECRET":                    "test-secret",
 	}
 
 	cfg, err := LoadFromLookup(mapLookup(values))
@@ -80,6 +84,9 @@ func TestLoadFromLookupOverrides(t *testing.T) {
 	}
 	if cfg.Presence.SessionTTL != 45*time.Second {
 		t.Fatalf("SessionTTL = %s; want 45s", cfg.Presence.SessionTTL)
+	}
+	if cfg.Auth.JWTSecret != "test-secret" {
+		t.Fatalf("Auth.JWTSecret = %q; want test-secret", cfg.Auth.JWTSecret)
 	}
 }
 
@@ -165,6 +172,13 @@ func TestValidateRejectsInvalidConfig(t *testing.T) {
 				cfg.Presence.HeartbeatInterval = cfg.Presence.PresenceTTL
 			},
 			wantErr: "HEARTBEAT_INTERVAL_SECONDS",
+		},
+		{
+			name: "empty JWT secret",
+			mutate: func(cfg *Config) {
+				cfg.Auth.JWTSecret = " "
+			},
+			wantErr: "JWT_SECRET",
 		},
 	}
 

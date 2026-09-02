@@ -26,6 +26,7 @@ const (
 	defaultSessionTTLSeconds           = 60
 	defaultPresenceTTLSeconds          = 60
 	defaultHeartbeatSeconds            = 25
+	defaultJWTSecret                   = "local-dev-secret-change-me"
 )
 
 // LookupFunc returns the environment value for a key.
@@ -42,6 +43,7 @@ type Config struct {
 	Kafka    KafkaConfig
 	Upload   UploadConfig
 	Presence PresenceConfig
+	Auth     AuthConfig
 }
 
 // HTTPConfig contains public HTTP ports.
@@ -84,6 +86,11 @@ type PresenceConfig struct {
 	SessionTTL        time.Duration
 	PresenceTTL       time.Duration
 	HeartbeatInterval time.Duration
+}
+
+// AuthConfig contains local development auth settings.
+type AuthConfig struct {
+	JWTSecret string
 }
 
 // Load reads configuration from process environment variables.
@@ -164,6 +171,9 @@ func LoadFromLookup(lookup LookupFunc) (Config, error) {
 			PresenceTTL:       presenceTTL,
 			HeartbeatInterval: heartbeatInterval,
 		},
+		Auth: AuthConfig{
+			JWTSecret: readString(lookup, "JWT_SECRET", defaultJWTSecret),
+		},
 	}
 
 	if err := cfg.Validate(); err != nil {
@@ -226,6 +236,9 @@ func (c Config) Validate() error {
 	}
 	if c.Presence.HeartbeatInterval >= c.Presence.PresenceTTL {
 		return fmt.Errorf("HEARTBEAT_INTERVAL_SECONDS must be lower than PRESENCE_TTL_SECONDS")
+	}
+	if strings.TrimSpace(c.Auth.JWTSecret) == "" {
+		return fmt.Errorf("JWT_SECRET is required")
 	}
 
 	return nil

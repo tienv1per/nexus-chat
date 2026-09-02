@@ -1,13 +1,19 @@
 SHELL := /bin/sh
 GO_CACHE ?= $(CURDIR)/.cache/go-build
 
-.PHONY: infra-up infra-down infra-ps infra-logs topics migrate seed test test-backend test-backend-race vet-backend build-web run-chat-service run-ws-server run-delivery-consumer run-status-consumer
+.PHONY: infra-up infra-up-local-postgres infra-down infra-down-local-postgres infra-ps infra-logs topics migrate seed db-smoke test test-backend test-backend-race vet-backend build-web run-chat-service run-ws-server run-delivery-consumer run-status-consumer
 
 infra-up:
 	docker compose up -d
 
+infra-up-local-postgres:
+	docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d
+
 infra-down:
 	docker compose down
+
+infra-down-local-postgres:
+	docker compose -f docker-compose.yml -f docker-compose.postgres.yml down
 
 infra-ps:
 	docker compose ps
@@ -19,18 +25,13 @@ topics:
 	docker compose up kafka-init
 
 migrate:
-	@if [ -x ./infra/scripts/migrate.sh ]; then \
-		./infra/scripts/migrate.sh; \
-	else \
-		echo "Phase 2 will add database migration scripts."; \
-	fi
+	./infra/scripts/migrate.sh
 
 seed:
-	@if [ -x ./infra/scripts/seed.sh ]; then \
-		./infra/scripts/seed.sh; \
-	else \
-		echo "Phase 2 will add local seed scripts."; \
-	fi
+	./infra/scripts/seed.sh
+
+db-smoke:
+	./infra/scripts/db-smoke-test.sh
 
 test: test-backend
 

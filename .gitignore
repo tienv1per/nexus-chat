@@ -18,6 +18,5 @@ web/*.tsbuildinfo
 
 .DS_Store
 
-.agents/
 docs/assets/
 docs/chat-v1/
